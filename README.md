@@ -5,21 +5,24 @@
 
 # 安装
 
-### pip 
-```pip install nonebot_plugin_note
+* pip 
+```
+pip install nonebot_plugin_note
 ```
 
-### nb_cli
-```nb plugin install nonebot_plugin_note
+* nb_cli
+```
+nb plugin install nonebot_plugin_note
 ```
 
 # 使用
-```nonebot.load_plugin('nonebot_plugin_note')
+```
+nonebot.load_plugin('nonebot_plugin_note')
 ```
 
 
 # 命令
-
+**以下命令需要加命令前缀**
 `note/记事/记事本 [记事内容]` 进行记事  
 `interval_note/间隔记事/间隔记事本 [记事内容] [时] [分] [秒]`，我将每隔[时][分][秒]提醒您一次  
 `cron_note/定时记事/定时记事本 [记事内容] （日）/（mon/tue/wed/thu/fri/sat/sun） （[时]） （[分]） [秒]`，我将在每月的[日][时][分][秒]/每周的[星期x][时][分][秒]/每天的[时][分][秒]/每时的[分][秒]/每分的[秒]提醒您一次  
