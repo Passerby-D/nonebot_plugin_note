@@ -1,0 +1,11 @@
+[project]
+name = "nonebot_plugin_note"
+version = "0.1.1"
+dependencies = [
+    "datetime",
+    "math",
+    "PIL",
+    "nonebot",
+    "nonebot_plugin_apscheduler",
+    "yaml",
+]
