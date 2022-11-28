@@ -27,6 +27,9 @@ default_ban_word={"words":[],"users":[]}
 if path.exists("data/notebook")==False:
     makedirs("data/notebook")
 
+if path.exists("{}/data".format(os.path.dirname(os.path.abspath(__file__))))==False:
+    makedirs("{}/data".format(os.path.dirname(os.path.abspath(__file__))))
+
 if path.exists(config_name)==False:
     with open(config_name,'w',encoding='utf-8') as f:
         f.write(dump(default_config,allow_unicode=True))
