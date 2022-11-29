@@ -32,8 +32,8 @@ note_bg_color=[225,225,0]
 try:
     nonebot.logger.debug(nonebot.get_driver().config.note_font_color)
     nonebot.logger.debug(nonebot.get_driver().config.note_bg_color)
-    note_font_color = nonebot.get_driver().config.note_font_color
-    note_bg_color = nonebot.get_driver().config.note_bg_color
+    note_font_color = nonebot.get_driver().config.note_font_color if nonebot.get_driver().config.note_font_color!= "" else [65,105,225]
+    note_bg_color = nonebot.get_driver().config.note_bg_color if nonebot.get_driver().config.note_bg_color != "" else [225,225,0]
 except:
     nonebot.logger.debug("note插件部分配置缺失，采用默认配置。")
 
