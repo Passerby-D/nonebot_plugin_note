@@ -24,6 +24,19 @@ default_config={}
 default_unfinished_job={}
 default_ban_word={"words":[],"users":[]}
 
+# 笔记的字体颜色和背景颜色
+note_font_color=[65,105,225]
+note_bg_color=[225,225,0]
+
+# 获取env配置
+try:
+    nonebot.logger.debug(nonebot.get_driver().config.note_font_color)
+    nonebot.logger.debug(nonebot.get_driver().config.note_bg_color)
+    note_font_color = nonebot.get_driver().config.note_font_color
+    note_bg_color = nonebot.get_driver().config.note_bg_color
+except:
+    nonebot.logger.debug("note插件部分配置缺失，采用默认配置。")
+
 if path.exists("data/notebook")==False:
     makedirs("data/notebook")
 
@@ -723,10 +736,10 @@ async def CreateMutiLinesPic(text,line_size,pic_path):
     font_conf = {
         'type':'simkai.ttf',
         'size':20,
-        'rgb':tuple([65,105,225])
+        'rgb':tuple(note_font_color)
     }
     bg_conf = {
-        'rgb':tuple([255,255,0])
+        'rgb':tuple(note_bg_color)
     }
     margin=50
 
