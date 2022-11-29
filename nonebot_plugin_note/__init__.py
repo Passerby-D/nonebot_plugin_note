@@ -28,6 +28,7 @@ default_ban_word={"words":[],"users":[]}
 note_font_color=[65,105,225]
 note_bg_color=[225,225,0]
 
+
 # 获取env配置
 try:
     nonebot.logger.debug(nonebot.get_driver().config.note_font_color)
@@ -36,6 +37,11 @@ try:
     note_bg_color = nonebot.get_driver().config.note_bg_color if nonebot.get_driver().config.note_bg_color != "" else [225,225,0]
 except:
     nonebot.logger.debug("note插件部分配置缺失，采用默认配置。")
+
+try:
+    note_type=nonebot.get_driver().config.note_type
+except:
+    note_type='image'
 
 if path.exists("data/notebook")==False:
     makedirs("data/notebook")
@@ -458,11 +464,14 @@ async def _(event:Event):
     if config.get(id):
         for note in config.get(id):
             notes+="\n"+"*"+note
-        cur_dir = os.path.dirname(os.path.abspath(__file__)) 
-        if path.exists(r"{}/data/list.png".format(cur_dir)):
-            os.remove(r"{}/data/list.png".format(cur_dir))
-        await CreateMutiLinesPic(notes,30,r"{}\data\list.png".format(cur_dir))
-        await note_list.finish(MessageSegment.image(file=r"file:///{}\data\list.png".format(cur_dir)))
+        if note_type=='text':
+            await note_check.finish(notes)
+        else:
+            cur_dir = os.path.dirname(os.path.abspath(__file__)) 
+            if path.exists(r"{}/data/list.png".format(cur_dir)):
+                os.remove(r"{}/data/list.png".format(cur_dir))
+            await CreateMutiLinesPic(notes,30,r"{}\data\list.png".format(cur_dir))
+            await note_list.finish(MessageSegment.image(file=r"file:///{}\data\list.png".format(cur_dir)))
     else:
         await note_list.finish("您还没有记事过，请先进行一次记事")
 
@@ -493,11 +502,15 @@ async def _(args:Message = CommandArg()):
             texts+=name+"（"+id+"）"+"的记事列表："+notes
         else:
             await note_check.finish(id+"还没有进行过记事")
-    cur_dir = os.path.dirname(os.path.abspath(__file__)) 
-    if path.exists(r"{}/data/check.png".format(cur_dir)):
-        os.remove(r"{}/data/check.png".format(cur_dir))
-    await CreateMutiLinesPic(texts,30,r"{}/data/check.png".format(cur_dir))
-    await note_check.finish(MessageSegment.image(file=r"file:///{}/data/check.png".format(cur_dir)))
+
+    if note_type=='text':
+        await note_check.finish(texts)
+    else:
+        cur_dir = os.path.dirname(os.path.abspath(__file__)) 
+        if path.exists(r"{}/data/check.png".format(cur_dir)):
+            os.remove(r"{}/data/check.png".format(cur_dir))
+        await CreateMutiLinesPic(texts,30,r"{}/data/check.png".format(cur_dir))
+        await note_check.finish(MessageSegment.image(file=r"file:///{}/data/check.png".format(cur_dir)))
 
 
 #移除某条note
@@ -627,10 +640,7 @@ async def _(args:Message=CommandArg()):
 #note帮助
 @note_help.handle()
 async def _(event:Event):
-    cur_dir = os.path.dirname(os.path.abspath(__file__))
-    if event.get_user_id() in superusers:
-        if path.exists(r"{}/data/superuser-help.png".format(cur_dir))==False:
-            msg="""
+    superuser_msg="""
 这是一个有提醒功能的记事本~\n
 输入命令'note/记事/记事本 [记事内容]'进行记事\n
 输入命令'interval_note/间隔记事/间隔记事本 [记事内容] [时] [分] [秒]'，我将每隔[时][分][秒]提醒您一次\n
@@ -646,13 +656,8 @@ async def _(event:Event):
 输入命令'note_ban/记事禁止/记事本禁止 1/2（word/user） [内容]'来设置禁用词/黑名单\n
 输入命令'note_ban_list/记事禁止列表/记事本禁止列表'来查看禁用词和黑名单\n
 输入命令'note_ban_remove/记事禁止移除/记事本禁止移除 1/2（word/user） [内容]'来移除禁用词/黑名单\n\n\n
-made by 路人丁（850199308），有问题请联系我
 """
-            await CreateMutiLinesPic(msg,70,r"{}/data/superuser-help.png".format(cur_dir))
-        await note_list.finish(MessageSegment.image(file=r"file:///{}/data/superuser-help.png".format(cur_dir)))
-    else:
-        if path.exists(r"{}/data/help.png".format(cur_dir))==False:
-            msg="""
+    user_msg="""
 这是一个有提醒功能的记事本~\n
 输入命令'note/记事/记事本 [记事内容]'进行记事\n
 输入命令'interval_note/间隔记事/间隔记事本 [记事内容] [时] [分] [秒]'，我将每隔[时][分][秒]提醒您一次\n
@@ -660,10 +665,24 @@ made by 路人丁（850199308），有问题请联系我
 输入命令'date_note/单次记事/单次记事本 [记事内容] [年] [月] [日]（或今天/明天/后天/大后天） [时] [分] [秒]'，我将在这个时刻提醒您\n
 输入命令'note_list/记事列表/记事本列表'来查看记事列表\n
 输入命令'note_delete/记事删除/记事本删除 [记事内容]'来删除一个记事项目\n\n\n
-made by 路人丁（850199308），有问题请联系我
 """
-            await CreateMutiLinesPic(msg,70,r"{}/data/help.png".format(cur_dir))
-        await note_list.finish(MessageSegment.image(file=r"file:///{}/data/help.png".format(cur_dir)))
+    if note_type=='text':
+        if event.get_user_id() in superusers:
+            await note_help.finish(superuser_msg)
+        else:
+            await note_help.finish(user_msg)
+    else:
+        cur_dir = os.path.dirname(os.path.abspath(__file__))
+        if event.get_user_id() in superusers:
+            if path.exists(r"{}/data/superuser-help.png".format(cur_dir)):
+                os.remove(r"{}/data/superuser-help.png".format(cur_dir))
+            await CreateMutiLinesPic(superuser_msg,70,r"{}/data/superuser-help.png".format(cur_dir))
+            await note_help.finish(MessageSegment.image(file=r"file:///{}/data/superuser-help.png".format(cur_dir)))
+        else:
+            if path.exists(r"{}/data/user-help.png".format(cur_dir)):
+                os.remove(r"{}/data/user-help.png".format(cur_dir))
+            await CreateMutiLinesPic(user_msg,70,r"{}/data/user-help.png".format(cur_dir))
+            await note_help.finish(MessageSegment.image(file=r"file:///{}/data/user-help.png".format(cur_dir)))
 
 
 #定时发消息
