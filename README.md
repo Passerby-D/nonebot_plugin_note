@@ -19,6 +19,14 @@ pip install nonebot_plugin_note
 nb plugin install nonebot_plugin_note
 ```
 
+# 配置.env
+
+```
+# nonebot_plugin_note
+NOTE_FONT_COLOR=[149,98,49] # 笔记文字颜色
+NOTE_BG_COLOR=[255,245,151] # 笔记背景颜色
+```
+
 # 使用
 ```
 nonebot.load_plugin('nonebot_plugin_note')
@@ -57,16 +65,22 @@ nonebot.load_plugin('nonebot_plugin_note')
 以下命令需要SUPERUSERS才能使用：  
 
 * `note_check/记事查看/记事本查看 [QQ账号]/all` 来查看某人/所有的记事项目  
+例如：`/记事查看 all`  
+`/记事查看 123456`  
 
 * `note_remove/记事移除/记事本移除 [QQ账号] [记事内容]` 来移除某人的某项记事内容  
+例如：`/记事移除 123456 记事内容`    
 
 * `note_spy/记事监控/记事本监控 [QQ账号]` 来监控某人的记事记录  
+例如：`/note_spy 123456`  
 
 * `note_spy_remove/记事监控移除/记事本监控移除 [QQ账号]` 来移除对某人的监控  
+例如：`/记事本监控移除 123456`  
 
 * `note_ban/记事禁止/记事本禁止 1/2（word/user） [内容]` 来设置禁用词/黑名单  
 
 * `note_ban_list/记事禁止列表/记事本禁止列表` 来查看禁用词和黑名单  
+例如：`/记事禁止列表`   
 
 * `note_ban_remove/记事禁止移除/记事本禁止移除 1/2（word/user） [内容]` 来移除禁用词/黑名单          
 
