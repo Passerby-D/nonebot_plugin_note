@@ -1,11 +1,21 @@
-nonebot_plugin_note
-===================
+<div align="center">
+  <a href="https://v2.nonebot.dev/store"><img src="https://github.com/A-kirami/nonebot-plugin-template/blob/resources/nbp_logo.png" width="180" height="180" alt="NoneBotPluginLogo"></a>
+  <br>
+  <p><img src="https://github.com/A-kirami/nonebot-plugin-template/blob/resources/NoneBotPlugin.svg" width="240" alt="NoneBotPluginText"></p>
+</div>
 
+<div align="center">
 
+# nonebot_plugin_note
+  
+_✨ NoneBot 一个有提醒功能的记事本插件  ✨_
+  
+<a href="https://pypi.python.org/pypi/nonebot-plugin-note">
+    <img src="https://img.shields.io/pypi/v/nonebot-plugin-note.svg" alt="pypi">
+</a>
 
-# 介绍
+</div>
 
-这是一个有提醒功能的记事本~  
 
 # 安装
 
@@ -78,11 +88,15 @@ nonebot.load_plugin('nonebot_plugin_note')
 例如：`/记事本监控移除 123456`  
 
 * `note_ban/记事禁止/记事本禁止 1/2（word/user） [内容]` 来设置禁用词/黑名单  
+例如：`/记事禁止 1 1表示禁止的记事内容`  
+`/记事禁止 2 123456`  
 
 * `note_ban_list/记事禁止列表/记事本禁止列表` 来查看禁用词和黑名单  
 例如：`/记事禁止列表`   
 
-* `note_ban_remove/记事禁止移除/记事本禁止移除 1/2（word/user） [内容]` 来移除禁用词/黑名单          
+* `note_ban_remove/记事禁止移除/记事本禁止移除 1/2（word/user） [内容]` 来移除禁用词/黑名单  
+例如：`/记事禁止移除 1表示移除禁止的记事内容`  
+`/记事禁止移除 2 123456`  
 
 # 其他
 
