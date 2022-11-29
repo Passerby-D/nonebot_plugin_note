@@ -37,6 +37,8 @@ nb plugin install nonebot_plugin_note
 NOTE_FONT_COLOR=[149,98,49]
 # 笔记背景颜色（不填则默认配置）
 NOTE_BG_COLOR=[255,245,151]
+# 回复形式（可选'image'/'text'，默认'image'）
+NOTE_TYPE='text'
 ```
 
 
