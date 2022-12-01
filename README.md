@@ -110,8 +110,7 @@ nonebot.load_plugin('nonebot_plugin_note')
 * `interval_note_other/间隔记事他人/间隔记事本他人 [QQ账号] [记事内容] [时] [分] [秒]` 来给某人添加interval_note
 * `cron_note_other/定时记事他人/定时记事本他人 [QQ账号] [记事内容] （日）/（mon/tue/wed/thu/fri/sat/sun） （[时]） （[分]） [秒]` 来给某人添加cron_note
 * `date_note_other/单次记事他人/单次记事本他人 [QQ账号] [记事内容] [年] [月] [日]（或今天/明天/后天/大后天） [时] [分] [秒]` 来给某人添加date_note
-
-实例：（跟前面interval_note/cron_note/date_note的例子同理，只需要多输入一个QQ账号即可）
+   （跟前面interval_note/cron_note/date_note的例子同理，只需要多输入一个QQ账号即可）
 
 # 其他
 
