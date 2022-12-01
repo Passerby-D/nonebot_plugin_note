@@ -107,6 +107,11 @@ nonebot.load_plugin('nonebot_plugin_note')
 `/记事禁止移除 1表示移除禁止的记事内容`  
 `/记事禁止移除 2 123456`  
 
+* `interval_note_other/间隔记事他人/间隔记事本他人 [QQ账号] [记事内容] [时] [分] [秒]` 来给某人添加interval_note
+* `cron_note_other/定时记事他人/定时记事本他人 [QQ账号] [记事内容] （日）/（mon/tue/wed/thu/fri/sat/sun） （[时]） （[分]） [秒]` 来给某人添加cron_note
+* `date_note_other/单次记事他人/单次记事本他人 [QQ账号] [记事内容] [年] [月] [日]（或今天/明天/后天/大后天） [时] [分] [秒]` 来给某人添加date_note
+实例：（跟前面interval_note/cron_note/date_note的例子同理，只需要多输入一个QQ账号即可）
+
 # 其他
 
 有bug有什么想法都可以告诉我，鄙人qq：850199308
@@ -116,5 +121,6 @@ nonebot.load_plugin('nonebot_plugin_note')
 - [x] 黑名单
 - [x] 监控某人记事
 - [x] 改为根据文字生成图片回复
+- [x] superuser可以给其他人创建记事项目
 - [ ] cron_note和date_note时不回复就会过一段时间再提醒一下
 
