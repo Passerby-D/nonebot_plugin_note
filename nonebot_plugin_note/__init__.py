@@ -91,6 +91,10 @@ note_ban=on_command(cmd="note_ban",aliases={"记事禁止","记事本禁止"},pr
 note_ban_list=on_command(cmd="note_ban_list",aliases={"记事禁止列表","记事本禁止列表"},priority=1,block=True,permission=SUPERUSER)
 note_ban_remove=on_command(cmd="note_ban_remove",aliases={"记事禁止移除","记事本禁止移除"},priority=1,block=True,permission=SUPERUSER)
 
+interval_note_other=on_command(cmd="interval_note_other",aliases={"间隔记事他人","间隔记事本他人"},priority=99,block=True,permission=SUPERUSER)
+cron_note_other=on_command(cmd="cron_note_other",aliases={"定时记事他人","定时记事本他人"},priority=99,block=True,permission=SUPERUSER)
+date_note_other=on_command(cmd="date_note_other",aliases={"单次记事他人","单次记事本他人"},priority=99,block=True,permission=SUPERUSER)
+
 
 #创建note
 @note.handle()
@@ -374,7 +378,59 @@ async def _date(event:Event,args:Message = CommandArg()):
     else:
         await date_note.finish("请通过指令note_help查询正确输入格式")
 
-        
+    
+async def isfriend(id:int):
+    friend_infos=await nonebot.get_bot().call_api('get_friend_list')
+    for friend_info in friend_infos:
+        if friend_info.get('user_id')==id:
+            return True
+    return False
+
+@interval_note_other.handle()
+async def _(event:Event,args:Message=CommandArg()):
+    arg_list=args.extract_plain_text().split()
+    try:
+        other_id=int(arg_list[0])
+    except:
+        await interval_note_other.finish("请通过指令note_help查询正确输入格式")
+    if not await isfriend(other_id):
+        await interval_note_other.finish('请先将{}添加为bot的好友！'.format(other_id))
+    _args=''
+    for arg in arg_list[1:]:
+        _args+=arg+' '
+    await _interval(event=event,args=Message(_args),other_id=other_id)
+
+
+@cron_note_other.handle()
+async def _(event:Event,args:Message=CommandArg()):
+    arg_list=args.extract_plain_text().split()
+    try:
+        other_id=int(arg_list[0])
+    except:
+        await cron_note_other.finish("请通过指令note_help查询正确输入格式")
+    if not await isfriend(other_id):
+        await cron_note_other.finish('请先将{}添加为bot的好友！'.format(other_id))
+    _args=''
+    for arg in arg_list[1:]:
+        _args+=arg+' '
+    await _cron(event=event,args=Message(_args),other_id=other_id)
+
+
+@date_note_other.handle()
+async def _(event:Event,args:Message=CommandArg()):
+    arg_list=args.extract_plain_text().split()
+    try:
+        other_id=int(arg_list[0])
+    except:
+        await date_note_other.finish("请通过指令note_help查询正确输入格式")
+    if not await isfriend(other_id):
+        await date_note_other.finish('请先将{}添加为bot的好友！'.format(other_id))
+    _args=''
+    for arg in arg_list[1:]:
+        _args+=arg+' '
+    await _date(event=event,args=Message(_args),other_id=other_id)
+
+
 
 #重启note任务
 @timing.scheduled_job("interval",seconds = 5,id='restart')
@@ -655,7 +711,10 @@ async def _(event:Event):
 输入命令'note_spy_remove/记事监控移除/记事本监控移除 [QQ账号]'来移除对某人的监控\n
 输入命令'note_ban/记事禁止/记事本禁止 1/2（word/user） [内容]'来设置禁用词/黑名单\n
 输入命令'note_ban_list/记事禁止列表/记事本禁止列表'来查看禁用词和黑名单\n
-输入命令'note_ban_remove/记事禁止移除/记事本禁止移除 1/2（word/user） [内容]'来移除禁用词/黑名单\n\n\n
+输入命令'note_ban_remove/记事禁止移除/记事本禁止移除 1/2（word/user） [内容]'来移除禁用词/黑名单\n
+输入命令'interval_note_other/间隔记事他人/间隔记事本他人 [QQ账号] [记事内容] [时] [分] [秒]'来给某人添加interval_note\n
+输入命令'cron_note_other/定时记事他人/定时记事本他人 [QQ账号] [记事内容] （日）/（mon/tue/wed/thu/fri/sat/sun） （[时]） （[分]） [秒]'来给某人添加cron_note\n
+输入命令'date_note_other/单次记事他人/单次记事本他人 [QQ账号] [记事内容] [年] [月] [日]（或今天/明天/后天/大后天） [时] [分] [秒]'来给某人添加date_note\n\n\n
 """
     user_msg="""
 这是一个有提醒功能的记事本~\n
