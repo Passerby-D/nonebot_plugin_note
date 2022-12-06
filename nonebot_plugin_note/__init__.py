@@ -1,4 +1,5 @@
 from datetime import datetime
+import time
 import math
 from os import path,makedirs
 import os
@@ -127,8 +128,11 @@ async def _note(event:Event,args:Message = CommandArg()):
 
 #创建interval_note
 @interval_note.handle()
-async def _interval(event:Event,args:Message = CommandArg()):
-    id=event.get_user_id()
+async def _interval(event:Event,args:Message = CommandArg(),other_id:int=0):
+    if other_id:
+        id=str(other_id)
+    else:
+        id=event.get_user_id()
     arg=args.extract_plain_text().split()
     ban=await read_ban()
     if id in ban.get("users"):
@@ -163,15 +167,23 @@ async def _interval(event:Event,args:Message = CommandArg()):
         if id in spy:
             for user in superusers:
                 await nonebot.get_bot().send_private_msg(user_id=user,message=Message(id+"进行了记事："+arg[0]))
-        await interval_note.send("成功记事，接下来将每隔%s小时%s分钟%s秒提醒您一次：%s"%(arg[1],arg[2],arg[3],arg[0]))
+        if other_id:
+            info=await nonebot.get_bot().call_api("get_stranger_info",user_id=id)
+            name=info.get('nickname')
+            await interval_note.send("成功记事，接下来将每隔{}小时{}分钟{}秒提醒{}({})一次：{}".format(arg[1],arg[2],arg[3],name,id,arg[0]))
+        else:
+            await interval_note.send("成功记事，接下来将每隔%s小时%s分钟%s秒提醒您一次：%s"%(arg[1],arg[2],arg[3],arg[0]))
     else:
         await interval_note.finish("请通过指令note_help查询正确输入格式")
 
 
 #创建cron_note
 @cron_note.handle()
-async def _cron(event:Event,args:Message = CommandArg()):
-    id=event.get_user_id()
+async def _cron(event:Event,args:Message = CommandArg(),other_id:int = 0):
+    if other_id:
+        id=str(other_id)
+    else:
+        id=event.get_user_id()
     arg=args.extract_plain_text().split()
     ban=await read_ban()
     if id in ban.get("users"):
@@ -204,7 +216,12 @@ async def _cron(event:Event,args:Message = CommandArg()):
         if id in spy:
             for user in superusers:
                 await nonebot.get_bot().send_private_msg(user_id=user,message=Message(id+"进行了记事："+arg[0]))
-        await cron_note.send("成功记事，接下来将在每分的%s秒提醒您：%s"%(arg[1],arg[0]))
+        if other_id:
+            info=await nonebot.get_bot().call_api("get_stranger_info",user_id=id)
+            name=info.get('nickname')
+            await cron_note.send("成功记事，接下来将在每分的{}秒提醒{}({})：{}".format(arg[1],name,id,arg[0]))
+        else:
+            await cron_note.send("成功记事，接下来将在每分的%s秒提醒您：%s"%(arg[1],arg[0]))
     if len(arg)==3:
         try:
             int(arg[1])
@@ -222,7 +239,12 @@ async def _cron(event:Event,args:Message = CommandArg()):
         if id in spy:
             for user in superusers:
                 await nonebot.get_bot().send_private_msg(user_id=user,message=Message(id+"进行了记事："+arg[0]))
-        await cron_note.send("成功记事，接下来将在每时的%s分%s秒提醒您：%s"%(arg[1],arg[2],arg[0]))
+        if other_id:
+            info=await nonebot.get_bot().call_api("get_stranger_info",user_id=id)
+            name=info.get('nickname')
+            await cron_note.send("成功记事，接下来将每时的{}分{}秒提醒{}({})：{}".format(arg[1],arg[2],name,id,arg[0]))
+        else:
+            await cron_note.send("成功记事，接下来将在每时的%s分%s秒提醒您：%s"%(arg[1],arg[2],arg[0]))
     if len(arg)==4:
         try:
             int(arg[1])
@@ -241,7 +263,12 @@ async def _cron(event:Event,args:Message = CommandArg()):
         if id in spy:
             for user in superusers:
                 await nonebot.get_bot().send_private_msg(user_id=user,message=Message(id+"进行了记事："+arg[0]))
-        await cron_note.send("成功记事，接下来将在每天的%s时%s分%s秒提醒您：%s"%(arg[1],arg[2],arg[3],arg[0]))
+        if other_id:
+            info=await nonebot.get_bot().call_api("get_stranger_info",user_id=id)
+            name=info.get('nickname')
+            await cron_note.send("成功记事，接下来将每天的{}时{}分{}秒提醒{}({})：{}".format(arg[1],arg[2],arg[3],name,id,arg[0]))
+        else:
+            await cron_note.send("成功记事，接下来将在每天的%s时%s分%s秒提醒您：%s"%(arg[1],arg[2],arg[3],arg[0]))
     if len(arg)==5:
         try:
             int(arg[2])
@@ -262,7 +289,12 @@ async def _cron(event:Event,args:Message = CommandArg()):
             if id in spy:
                 for user in superusers:
                     await nonebot.get_bot().send_private_msg(user_id=user,message=Message(id+"进行了记事："+arg[0]))
-            await cron_note.send("成功记事，接下来将在每月的%s日%s时%s分%s秒提醒您：%s"%(arg[1],arg[2],arg[3],arg[4],arg[0]))
+            if other_id:
+                info=await nonebot.get_bot().call_api("get_stranger_info",user_id=id)
+                name=info.get('nickname')
+                await cron_note.send("成功记事，接下来将每月的{}日{}时{}分{}秒提醒{}({})：{}".format(arg[1],arg[2],arg[3],arg[4],name,id,arg[0]))
+            else:
+                await cron_note.send("成功记事，接下来将在每月的%s日%s时%s分%s秒提醒您：%s"%(arg[1],arg[2],arg[3],arg[4],arg[0]))
         except:
             if arg[1] in ["mon","tue","wed","thu","fri","sat","sun"]:
                 scheduler.add_job(func=note_job,trigger="cron",day_of_week=arg[1],hour=arg[2],minute=arg[3],second=arg[4],args=[arg[0],id],id=job_id)
@@ -276,7 +308,12 @@ async def _cron(event:Event,args:Message = CommandArg()):
                 if id in spy:
                     for user in superusers:
                         await nonebot.get_bot().send_private_msg(user_id=user,message=Message(id+"进行了记事："+arg[0]))
-                await cron_note.send("成功记事，接下来将在每周的%s日%s时%s分%s秒提醒您：%s"%(arg[1],arg[2],arg[3],arg[4],arg[0]))
+                if other_id:
+                    info=await nonebot.get_bot().call_api("get_stranger_info",user_id=id)
+                    name=info.get('nickname')
+                    await cron_note.send("成功记事，接下来将每周的{}日{}时{}分{}秒提醒{}({})：{}".format(arg[1],arg[2],arg[3],arg[4],name,id,arg[0]))
+                else:
+                    await cron_note.send("成功记事，接下来将在每周的%s日%s时%s分%s秒提醒您：%s"%(arg[1],arg[2],arg[3],arg[4],arg[0]))
             else:
                 await cron_note.finish("请通过指令note_help查询正确输入格式")
     if len(arg)<2 or len(arg)>5:
@@ -285,8 +322,11 @@ async def _cron(event:Event,args:Message = CommandArg()):
 
 #创建date_note
 @date_note.handle()
-async def _date(event:Event,args:Message = CommandArg()):
-    id=event.get_user_id()
+async def _date(event:Event,args:Message = CommandArg(),other_id:int =0):
+    if other_id:
+        id=str(other_id)
+    else:
+        id=event.get_user_id()
     arg=args.extract_plain_text().split()
     ban=await read_ban()
     if id in ban.get("users"):
@@ -374,7 +414,12 @@ async def _date(event:Event,args:Message = CommandArg()):
             if id in spy:
                 for user in superusers:
                     await nonebot.get_bot().send_private_msg(user_id=user,message=Message(id+"进行了记事："+arg[0]))
-            await date_note.send("成功记事，将在{}年{}月{}日{}时{}分{}秒提醒您：{}".format(year,month,day,hour,minute,second,arg[0]))
+            if other_id:
+                info=await nonebot.get_bot().call_api("get_stranger_info",user_id=id)
+                name=info.get('nickname')
+                await date_note.send("成功记事，将在{}年{}月{}日{}时{}分{}秒提醒{}({})：{}".format(year,month,day,hour,minute,second,name,id,arg[0]))
+            else:
+                await date_note.send("成功记事，将在{}年{}月{}日{}时{}分{}秒提醒您：{}".format(year,month,day,hour,minute,second,arg[0]))
     else:
         await date_note.finish("请通过指令note_help查询正确输入格式")
 
@@ -435,6 +480,12 @@ async def _(event:Event,args:Message=CommandArg()):
 #重启note任务
 @timing.scheduled_job("interval",seconds = 5,id='restart')
 async def _restart():
+    try:
+        for superuser in superusers:
+            await nonebot.get_bot().send_private_msg(user_id=superuser,message=Message('记事项目重启中……'))
+    except:
+        return
+    timing.remove_job(job_id='restart')
     with open(unfinished_job_name,'r',encoding='utf-8') as f:
         unfinished_job=load(f.read(),Loader=Loader)
         job_id_list=unfinished_job.keys()
@@ -484,7 +535,6 @@ async def _restart():
         f.close()
     for superuser in superusers:
         await nonebot.get_bot().send_private_msg(user_id=superuser,message=Message("已成功重启所有的记事项目"))
-    timing.remove_job(job_id='restart')
 
 
 #删除note
