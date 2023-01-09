@@ -4,5 +4,6 @@ version = "0.1.5"
 dependencies = [
     "pillow",
     "nonebot2",
-    "nonebot_plugin_apscheduler",
+    "nonebot-plugin-apscheduler",
+    "nonebot-adapter-onebot"
 ]
