@@ -37,8 +37,10 @@ nb plugin install nonebot_plugin_note
 NOTE_FONT_COLOR=[149,98,49]
 # 笔记背景颜色（不填则默认配置）
 NOTE_BG_COLOR=[255,245,151]
-# 回复形式（可选'image'/'text'，默认'image'）
-NOTE_TYPE='text'
+# 回复形式（可选'image'/'text'，默认'text'）
+note_type='image'
+# 重启提示（可选true/false，默认false）
+note_restart_notice=true
 ```
 
 
@@ -77,15 +79,17 @@ nonebot.load_plugin('nonebot_plugin_note')
 实例：`/记事删除 这里记录自己的一件事情，后期可以通过记事列表命令查看，记事删除命令删除`    
 
 
+**注：如果`[记事内容]`中需要有空格的话，可以分布使用命令(即直接使用指令不带参数)**
+
 
 以下命令需要SUPERUSERS才能使用：  
 
-* `note_check/记事查看/记事本查看 [QQ账号]/all` 来查看某人/所有的记事项目  
+* `note_check/记事查看/记事本查看 [QQ账号(QQ群在群号前加个0)]/all` 来查看某人/所有的记事项目  
 实例：  
 `/记事查看 all`  
 `/记事查看 123456`  
 
-* `note_remove/记事移除/记事本移除 [QQ账号] [记事内容]` 来移除某人的某项记事内容  
+* `note_remove/记事移除/记事本移除 [QQ账号(QQ群在群号前加个0)] [记事内容]` 来移除某人的某项记事内容  
 实例：`/记事移除 123456 记事内容`    
 
 * `note_spy/记事监控/记事本监控 [QQ账号]` 来监控某人的记事记录  
@@ -112,6 +116,11 @@ nonebot.load_plugin('nonebot_plugin_note')
 * `date_note_other/单次记事他人/单次记事本他人 [QQ账号] [记事内容] [年] [月] [日]（或今天/明天/后天/大后天） [时] [分] [秒]` 来给某人添加date_note  
 （跟前面interval_note/cron_note/date_note的例子同理，只需要多输入一个QQ账号即可）
 
+* `interval_note_group/群间隔记事/群间隔记事本 [QQ群号] [记事内容] [时] [分] [秒]` 来给某群添加interval_note
+* `cron_note_group/群定时记事/群定时记事本 [QQ群号] [记事内容] （日）/（mon/tue/wed/thu/fri/sat/sun） （[时]） （[分]） [秒]` 来给某群添加cron_note
+* `date_note_group/群单次记事/群单次记事本 [QQ群号] [记事内容] [年] [月] [日]（或今天/明天/后天/大后天） [时] [分] [秒]` 来给某群添加date_note  
+
+
 # 其他
 
 有bug有什么想法都可以告诉我，鄙人qq：850199308
@@ -122,5 +131,7 @@ nonebot.load_plugin('nonebot_plugin_note')
 - [x] 监控某人记事
 - [x] 改为根据文字生成图片回复
 - [x] superuser可以给其他人创建记事项目
+- [x] 群记事功能
+- [ ] 图片记事
 - [ ] cron_note和date_note时不回复就会过一段时间再提醒一下
 
