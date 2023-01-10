@@ -49,7 +49,6 @@ try:
 except:
     note_restart_notice=False
 
-print(note_type,note_restart_notice)
 
 
 if path.exists("data/notebook")==False:
@@ -1049,8 +1048,9 @@ async def _restart():
 
             if parameter[1][0]=='0':
                 group_id=parameter[1].replace('0','',1)
-                info=await nonebot.get_bot().call_api("get_group_info",group_id=group_id)
-                name=info.get('group_name')
+                if note_restart_notice:
+                    info=await nonebot.get_bot().call_api("get_group_info",group_id=group_id)
+                    name=info.get('group_name')
                 if parameter[0]=='interval':
                     scheduler.add_job(func=group_note_job,trigger='interval',hours=parameter[2],minutes=parameter[3],seconds=parameter[4],args=[parameter[5],group_id],id=job_id)
                     if note_restart_notice:
@@ -1099,8 +1099,9 @@ async def _restart():
 
             else:
                 user_id=parameter[1]
-                info=await nonebot.get_bot().call_api("get_stranger_info",user_id=user_id)
-                name=info.get('nickname')
+                if note_restart_notice:
+                    info=await nonebot.get_bot().call_api("get_stranger_info",user_id=user_id)
+                    name=info.get('nickname')
                 if parameter[0]=='interval':
                     scheduler.add_job(func=note_job,trigger='interval',hours=parameter[2],minutes=parameter[3],seconds=parameter[4],args=[parameter[5],user_id],id=job_id)
                     if note_restart_notice:
