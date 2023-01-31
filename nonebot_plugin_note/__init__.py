@@ -211,10 +211,10 @@ async def _(matcher:Matcher,args:Message = CommandArg()):
         matcher.set_arg('content',Message(arglist[0]))
         try:
             time=Message('')
-            time+=Message(arglist[-1])
-            time+=Message(arglist[-2]+' ')
-            time+=Message(arglist[-3]+' ')
-            time+=Message(arglist[-4]+' ')
+            time+=Message(arglist[1])
+            time+=Message(' '+arglist[2])
+            time+=Message(' '+arglist[3])
+            time+=Message(' '+arglist[4])
         except:
             pass
         matcher.set_arg('time',time)
@@ -234,7 +234,7 @@ async def _(matcher:Matcher,event:Event,time:str=ArgPlainText('time')):
     id=event.get_user_id()
     ban=await read_ban()
     if id in ban.get("users"):
-            await cron_note.finish("抱歉，您在记事黑名单内，不能进行记事")
+        await cron_note.finish("抱歉，您在记事黑名单内，不能进行记事")
     for word in ban.get("words"):
         if word in content:
             for user in superusers:
@@ -248,7 +248,7 @@ async def _(matcher:Matcher,event:Event,time:str=ArgPlainText('time')):
     if content in config.get(id):
         await cron_note.finish("已存在相同内容的记事，请重新输入")
 
-    job_id=id+'-'+content   
+    job_id=id+'-'+content
     if len(time_list)==1:
         try:
             second=int(time_list[0])
@@ -504,15 +504,15 @@ async def _(matcher:Matcher,event:Event,time:str=ArgPlainText('time')):
 @cron_note_other.handle()
 async def _(matcher:Matcher,event:Event,args:Message=CommandArg()):
     arglist=args.extract_plain_text().split()
-    if 12<len(arglist)<8:
+    if 2<len(arglist)<8:
         matcher.set_arg('qq_id',Message(arglist[0]))
         matcher.set_arg('content',Message(arglist[1]))
         try:
             time=Message('')
-            time+=Message(arglist[-1])
-            time+=Message(arglist[-2]+' ')
-            time+=Message(arglist[-3]+' ')
-            time+=Message(arglist[-4]+' ')
+            time+=Message(' '+arglist[2])
+            time+=Message(' '+arglist[3])
+            time+=Message(' '+arglist[4])
+            time+=Message(' '+arglist[5])
         except:
             pass
         matcher.set_arg('time',time)
@@ -799,15 +799,15 @@ async def _(matcher:Matcher,event:Event,time:str=ArgPlainText('time')):
 @cron_note_group.handle()
 async def _(matcher:Matcher,event:Event,args:Message=CommandArg()):
     arglist=args.extract_plain_text().split()
-    if 12<len(arglist)<8:
+    if 2<len(arglist)<8:
         matcher.set_arg('group_id',Message(arglist[0]))
         matcher.set_arg('content',Message(arglist[1]))
         try:
             time=Message('')
-            time+=Message(arglist[-1])
-            time+=Message(arglist[-2]+' ')
-            time+=Message(arglist[-3]+' ')
-            time+=Message(arglist[-4]+' ')
+            time+=Message(' '+arglist[2])
+            time+=Message(' '+arglist[3])
+            time+=Message(' '+arglist[4])
+            time+=Message(' '+arglist[5])
         except:
             pass
         matcher.set_arg('time',time)
